@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            margin: 15px 0;
+        }
+
+        .strength {
+            height: 12px;
+            background: #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            width: 0%;
+            transition: 0.3s;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .tips {
+            margin-top: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Password Strength Checker</h1>
+
+    <p>Enter a password to check its strength.</p>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Enter password..."
+        oninput="checkPassword()"
+    >
+
+    <div class="strength">
+        <div class="bar" id="bar"></div>
+    </div>
+
+    <p id="message">Start typing...</p>
+
+    <div class="tips">
+        <strong>For a stronger password:</strong>
+        <ul>
+            <li>Use at least 12 characters</li>
+            <li>Include uppercase and lowercase letters</li>
+            <li>Include numbers</li>
+            <li>Include special characters</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+function checkPassword() {
+    const password = document.getElementById("password").value;
+    const bar = document.getElementById("bar");
+    const message = document.getElementById("message");
+
+    let score = 0;
+
+    if (password.length >= 8) score++;
+    if (password.length >= 12) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    if (password.length === 0) {
+        bar.style.width = "0%";
+        message.textContent = "Start typing...";
+        return;
+    }
+
+    if (score <= 2) {
+        bar.style.width = "30%";
+        bar.style.background = "#e74c3c";
+        message.textContent = "Weak password";
+        message.style.color = "#e74c3c";
+    } else if (score <= 4) {
+        bar.style.width = "65%";
+        bar.style.background = "#f39c12";
+        message.textContent = "Medium password";
+        message.style.color = "#f39c12";
+    } else {
+        bar.style.width = "100%";
+        bar.style.background = "#27ae60";
+        message.textContent = "Strong password";
+        message.style.color = "#27ae60";
+    }
+}
+</script>
+
+</body>
+</html>
